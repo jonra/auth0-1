@@ -12,12 +12,12 @@ export class HomePage {
     public auth: AuthService
   ) {
 
-    console.log(auth.loggedIn)
-    this.auth.userProfile$.subscribe(res =>{
-      console.log(res)
-    },err =>{
-      console.log(err)
-    })
+    // console.log(auth.loggedIn)
+    // this.auth.userProfile$.subscribe(res =>{
+    //   console.log(res)
+    // },err =>{
+    //   console.log(err)
+    // })
     
   }
 

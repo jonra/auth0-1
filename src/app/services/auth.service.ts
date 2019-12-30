@@ -42,7 +42,7 @@ export class AuthService {
   constructor(private router: Router) {
     // On initial load, check authentication state with authorization server
     // Set up local auth streams if user is already authenticated
-    this.localAuthSetup();
+    // this.localAuthSetup();
     // Handle redirect from Auth0 login
     this.handleAuthCallback();
   }
@@ -84,7 +84,7 @@ export class AuthService {
       console.log('hello')
       client.loginWithRedirect({
         redirect_uri: `${window.location.origin}`,
-        appState: { target: redirectPath }
+        // appState: { target: redirectPath }
       });
     });
   
