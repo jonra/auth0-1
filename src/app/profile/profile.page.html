@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>profile</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <div class="container mt-5" *ngIf="auth.userProfile$ | async as profile">
+    <div class="row align-items-center profile-header mb-5 text-center text-md-left ">
+      <div class="col-md-2 centring">
+        <img [src]="profile.picture" class="imgStyle"/>
+      </div>
+      <div class="col-md centring">
+        <h2>{{ profile.name }}</h2>
+      </div>
+      <div class="col-md centring">
+        <p class="lead text-muted">{{ profile.email }}</p>
+      </div>
+    </div>
+
+    <!-- <div class="row" *ngIf="profileJson">
+      <pre class="rounded"><code class="json" [highlight]="profileJson"></code></pre>
+    </div> -->
+  </div>
+
+  <ion-button button expand="block" color="danger" (click)="auth.logout()">Log Out</ion-button>
+
+</ion-content>
