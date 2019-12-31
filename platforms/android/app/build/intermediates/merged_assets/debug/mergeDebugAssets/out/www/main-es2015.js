@@ -424,6 +424,32 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/raw-loader/dist/cjs.js!./src/app/home/home.page.html":
+/*!***************************************************************************!*\
+  !*** ./node_modules/raw-loader/dist/cjs.js!./src/app/home/home.page.html ***!
+  \***************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ("<ion-header>\n  <ion-toolbar>\n    <ion-title>\n      Home\n    </ion-title>\n  </ion-toolbar>\n</ion-header>\n\n<ion-content class=\"ion-padding\">\n  <p *ngIf=\"auth.loading\" class=\"ion-text-center\">Loading...</p>\n  <ng-template [ngIf]=\"!auth.loading\">\n    <!-- Not loading, not logged in: show login button -->\n    <ion-button\n      button\n      expand=\"block\"\n      color=\"primary\"\n      *ngIf=\"!auth.loggedIn\"\n      (click)=\"auth.login()\">Log In</ion-button>\n    <!-- Not loading, logged in: show profile and logout button -->\n    <ng-template [ngIf]=\"auth.loggedIn\">\n      <ion-card *ngIf=\"auth.user\">\n        <img [src]=\"auth.user.picture\">\n        <ion-card-content>\n          <ion-card-title>{{ auth.user.name }}</ion-card-title>\n          <pre>{{ auth.user | json }}</pre>\n        </ion-card-content>\n      </ion-card>\n      <ion-button\n        button\n        expand=\"block\"\n        color=\"danger\"\n        (click)=\"auth.logout()\">Log Out</ion-button>\n    </ng-template>\n  </ng-template>\n</ion-content>\n");
+
+/***/ }),
+
+/***/ "./node_modules/raw-loader/dist/cjs.js!./src/app/profile/profile.page.html":
+/*!*********************************************************************************!*\
+  !*** ./node_modules/raw-loader/dist/cjs.js!./src/app/profile/profile.page.html ***!
+  \*********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ("<ion-header>\n  <ion-toolbar>\n    <ion-title>profile</ion-title>\n  </ion-toolbar>\n</ion-header>\n\n<ion-content>\n\n  <div class=\"container mt-5\" *ngIf=\"auth.userProfile$ | async as profile\">\n    <div class=\"row align-items-center profile-header mb-5 text-center text-md-left \">\n      <div class=\"col-md-2 centring\">\n        <img [src]=\"profile.picture\" class=\"imgStyle\"/>\n      </div>\n      <div class=\"col-md centring\">\n        <h2>{{ profile.name }}</h2>\n      </div>\n      <div class=\"col-md centring\">\n        <p class=\"lead text-muted\">{{ profile.email }}</p>\n      </div>\n    </div>\n\n    <!-- <div class=\"row\" *ngIf=\"profileJson\">\n      <pre class=\"rounded\"><code class=\"json\" [highlight]=\"profileJson\"></code></pre>\n    </div> -->\n  </div>\n\n  <ion-button button expand=\"block\" color=\"danger\" (click)=\"auth.logout()\">Log Out</ion-button>\n\n</ion-content>");
+
+/***/ }),
+
 /***/ "./node_modules/tslib/tslib.es6.js":
 /*!*****************************************!*\
   !*** ./node_modules/tslib/tslib.es6.js ***!
@@ -689,33 +715,21 @@ module.exports = g;
   !*** ./src/$$_lazy_route_resource lazy namespace object ***!
   \**********************************************************/
 /*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-var map = {
-	"./tabs/tabs.module": [
-		"./src/app/tabs/tabs.module.ts",
-		"tabs-tabs-module"
-	]
-};
-function webpackAsyncContext(req) {
-	if(!__webpack_require__.o(map, req)) {
-		return Promise.resolve().then(function() {
-			var e = new Error("Cannot find module '" + req + "'");
-			e.code = 'MODULE_NOT_FOUND';
-			throw e;
-		});
-	}
-
-	var ids = map[req], id = ids[0];
-	return __webpack_require__.e(ids[1]).then(function() {
-		return __webpack_require__(id);
+function webpackEmptyAsyncContext(req) {
+	// Here Promise.resolve().then() is used instead of new Promise() to prevent
+	// uncaught exception popping up in devtools
+	return Promise.resolve().then(function() {
+		var e = new Error("Cannot find module '" + req + "'");
+		e.code = 'MODULE_NOT_FOUND';
+		throw e;
 	});
 }
-webpackAsyncContext.keys = function webpackAsyncContextKeys() {
-	return Object.keys(map);
-};
-webpackAsyncContext.id = "./src/$$_lazy_route_resource lazy recursive";
-module.exports = webpackAsyncContext;
+webpackEmptyAsyncContext.keys = function() { return []; };
+webpackEmptyAsyncContext.resolve = webpackEmptyAsyncContext;
+module.exports = webpackEmptyAsyncContext;
+webpackEmptyAsyncContext.id = "./src/$$_lazy_route_resource lazy recursive";
 
 /***/ }),
 
@@ -732,11 +746,26 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm2015/router.js");
+/* harmony import */ var _app_services_auth_guard__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../app/services/auth.guard */ "./src/app/services/auth.guard.ts");
+/* harmony import */ var _profile_profile_page__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./profile/profile.page */ "./src/app/profile/profile.page.ts");
+/* harmony import */ var _home_home_page__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./home/home.page */ "./src/app/home/home.page.ts");
+
+
+
 
 
 
 const routes = [
-    { path: '', loadChildren: './tabs/tabs.module#TabsPageModule' }
+    {
+        path: 'profile',
+        component: _profile_profile_page__WEBPACK_IMPORTED_MODULE_4__["ProfilePage"],
+        canActivate: [_app_services_auth_guard__WEBPACK_IMPORTED_MODULE_3__["AuthGuard"]]
+    },
+    {
+        path: '',
+        component: _home_home_page__WEBPACK_IMPORTED_MODULE_5__["HomePage"],
+        pathMatch: 'full'
+    }
 ];
 let AppRoutingModule = class AppRoutingModule {
 };
@@ -788,10 +817,15 @@ let AppComponent = class AppComponent {
         this.platform.ready().then(() => {
             this.statusBar.styleDefault();
             this.splashScreen.hide();
-            // Redirect back to app after authenticating
-            window.handleOpenURL = (url) => {
-                _auth0_cordova__WEBPACK_IMPORTED_MODULE_5___default.a.onRedirectUri(url);
-            };
+            if (this.platform.is('android')) {
+                // Redirect back to app after authenticating
+                window.handleOpenURL = (url) => {
+                    _auth0_cordova__WEBPACK_IMPORTED_MODULE_5___default.a.onRedirectUri(url);
+                };
+            }
+            else {
+                console.log('not platform');
+            }
         });
     }
 };
@@ -836,6 +870,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _app_routing_module__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./app-routing.module */ "./src/app/app-routing.module.ts");
 /* harmony import */ var _app_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./app.component */ "./src/app/app.component.ts");
 /* harmony import */ var _services_auth_service__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./services/auth.service */ "./src/app/services/auth.service.ts");
+/* harmony import */ var _profile_profile_page__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./profile/profile.page */ "./src/app/profile/profile.page.ts");
+/* harmony import */ var _home_home_page__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./home/home.page */ "./src/app/home/home.page.ts");
+
+
 
 
 
@@ -852,7 +890,10 @@ let AppModule = class AppModule {
 };
 AppModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["NgModule"])({
-        declarations: [_app_component__WEBPACK_IMPORTED_MODULE_10__["AppComponent"]],
+        declarations: [_app_component__WEBPACK_IMPORTED_MODULE_10__["AppComponent"],
+            _profile_profile_page__WEBPACK_IMPORTED_MODULE_12__["ProfilePage"],
+            _home_home_page__WEBPACK_IMPORTED_MODULE_13__["HomePage"]
+        ],
         entryComponents: [],
         imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_2__["BrowserModule"], _ionic_angular__WEBPACK_IMPORTED_MODULE_4__["IonicModule"].forRoot(), _ionic_storage__WEBPACK_IMPORTED_MODULE_5__["IonicStorageModule"].forRoot(), _app_routing_module__WEBPACK_IMPORTED_MODULE_9__["AppRoutingModule"]],
         providers: [
@@ -865,6 +906,120 @@ AppModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_10__["AppComponent"]]
     })
 ], AppModule);
+
+
+
+/***/ }),
+
+/***/ "./src/app/home/home.page.scss":
+/*!*************************************!*\
+  !*** ./src/app/home/home.page.scss ***!
+  \*************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = (".welcome-card img {\n  max-height: 35vh;\n  overflow: hidden;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9Vc2Vycy9yaXp3YW51bGxhaC9EZXNrdG9wL2lvbmljIGFwcHMvYXV0aDAvc3JjL2FwcC9ob21lL2hvbWUucGFnZS5zY3NzIiwic3JjL2FwcC9ob21lL2hvbWUucGFnZS5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0UsZ0JBQUE7RUFDQSxnQkFBQTtBQ0NGIiwiZmlsZSI6InNyYy9hcHAvaG9tZS9ob21lLnBhZ2Uuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbIi53ZWxjb21lLWNhcmQgaW1nIHtcbiAgbWF4LWhlaWdodDogMzV2aDtcbiAgb3ZlcmZsb3c6IGhpZGRlbjtcbn1cbiIsIi53ZWxjb21lLWNhcmQgaW1nIHtcbiAgbWF4LWhlaWdodDogMzV2aDtcbiAgb3ZlcmZsb3c6IGhpZGRlbjtcbn0iXX0= */");
+
+/***/ }),
+
+/***/ "./src/app/home/home.page.ts":
+/*!***********************************!*\
+  !*** ./src/app/home/home.page.ts ***!
+  \***********************************/
+/*! exports provided: HomePage */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HomePage", function() { return HomePage; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
+/* harmony import */ var _services_auth_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../services/auth.service */ "./src/app/services/auth.service.ts");
+
+
+
+let HomePage = class HomePage {
+    constructor(auth) {
+        // console.log(auth.loggedIn)
+        // this.auth.userProfile$.subscribe(res =>{
+        //   console.log(res)
+        // },err =>{
+        //   console.log(err)
+        // })
+        this.auth = auth;
+    }
+};
+HomePage.ctorParameters = () => [
+    { type: _services_auth_service__WEBPACK_IMPORTED_MODULE_2__["AuthService"] }
+];
+HomePage = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+        selector: 'app-home',
+        template: tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(/*! raw-loader!./home.page.html */ "./node_modules/raw-loader/dist/cjs.js!./src/app/home/home.page.html")).default,
+        styles: [tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(/*! ./home.page.scss */ "./src/app/home/home.page.scss")).default]
+    }),
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_services_auth_service__WEBPACK_IMPORTED_MODULE_2__["AuthService"]])
+], HomePage);
+
+
+
+/***/ }),
+
+/***/ "./src/app/profile/profile.page.scss":
+/*!*******************************************!*\
+  !*** ./src/app/profile/profile.page.scss ***!
+  \*******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = (".imgStyle {\n  border-radius: 100%;\n  width: 65%;\n}\n\n.centring {\n  justify-content: center;\n  align-items: center;\n  display: flex;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9Vc2Vycy9yaXp3YW51bGxhaC9EZXNrdG9wL2lvbmljIGFwcHMvYXV0aDAvc3JjL2FwcC9wcm9maWxlL3Byb2ZpbGUucGFnZS5zY3NzIiwic3JjL2FwcC9wcm9maWxlL3Byb2ZpbGUucGFnZS5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0UsbUJBQUE7RUFDQSxVQUFBO0FDQ0Y7O0FEQ0E7RUFDSSx1QkFBQTtFQUNBLG1CQUFBO0VBQ0EsYUFBQTtBQ0VKIiwiZmlsZSI6InNyYy9hcHAvcHJvZmlsZS9wcm9maWxlLnBhZ2Uuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbIi5pbWdTdHlsZSB7XG4gIGJvcmRlci1yYWRpdXM6IDEwMCU7XG4gIHdpZHRoOiA2NSU7XG59XG4uY2VudHJpbmd7XG4gICAganVzdGlmeS1jb250ZW50OiBjZW50ZXI7XG4gICAgYWxpZ24taXRlbXM6IGNlbnRlcjtcbiAgICBkaXNwbGF5OiBmbGV4O1xufVxuIiwiLmltZ1N0eWxlIHtcbiAgYm9yZGVyLXJhZGl1czogMTAwJTtcbiAgd2lkdGg6IDY1JTtcbn1cblxuLmNlbnRyaW5nIHtcbiAganVzdGlmeS1jb250ZW50OiBjZW50ZXI7XG4gIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gIGRpc3BsYXk6IGZsZXg7XG59Il19 */");
+
+/***/ }),
+
+/***/ "./src/app/profile/profile.page.ts":
+/*!*****************************************!*\
+  !*** ./src/app/profile/profile.page.ts ***!
+  \*****************************************/
+/*! exports provided: ProfilePage */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ProfilePage", function() { return ProfilePage; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
+/* harmony import */ var _services_auth_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../services/auth.service */ "./src/app/services/auth.service.ts");
+
+
+
+let ProfilePage = class ProfilePage {
+    constructor(auth) {
+        this.auth = auth;
+    }
+    ngOnInit() {
+        console.log('hello profile');
+        this.auth.userProfile$.subscribe(res => {
+            console.log(res);
+        }, err => {
+            console.log(err);
+        });
+    }
+};
+ProfilePage.ctorParameters = () => [
+    { type: _services_auth_service__WEBPACK_IMPORTED_MODULE_2__["AuthService"] }
+];
+ProfilePage = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+        selector: 'app-profile',
+        template: tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(/*! raw-loader!./profile.page.html */ "./node_modules/raw-loader/dist/cjs.js!./src/app/profile/profile.page.html")).default,
+        styles: [tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(/*! ./profile.page.scss */ "./src/app/profile/profile.page.scss")).default]
+    }),
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_services_auth_service__WEBPACK_IMPORTED_MODULE_2__["AuthService"]])
+], ProfilePage);
 
 
 
@@ -895,6 +1050,53 @@ const AUTH_CONFIG = {
 
 /***/ }),
 
+/***/ "./src/app/services/auth.guard.ts":
+/*!****************************************!*\
+  !*** ./src/app/services/auth.guard.ts ***!
+  \****************************************/
+/*! exports provided: AuthGuard */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AuthGuard", function() { return AuthGuard; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
+/* harmony import */ var _auth_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./auth.service */ "./src/app/services/auth.service.ts");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm2015/operators/index.js");
+
+
+
+
+let AuthGuard = class AuthGuard {
+    constructor(auth) {
+        this.auth = auth;
+    }
+    canActivate(next, state) {
+        return this.auth.isAuthenticated$.pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["tap"])(loggedIn => {
+            if (!loggedIn) {
+                this.auth.login(state.url);
+            }
+            else {
+                console.log('not logged in');
+            }
+        }));
+    }
+};
+AuthGuard.ctorParameters = () => [
+    { type: _auth_service__WEBPACK_IMPORTED_MODULE_2__["AuthService"] }
+];
+AuthGuard = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
+        providedIn: 'root'
+    }),
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_auth_service__WEBPACK_IMPORTED_MODULE_2__["AuthService"]])
+], AuthGuard);
+
+
+
+/***/ }),
+
 /***/ "./src/app/services/auth.service.ts":
 /*!******************************************!*\
   !*** ./src/app/services/auth.service.ts ***!
@@ -907,12 +1109,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AuthService", function() { return AuthService; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
-/* harmony import */ var _ionic_storage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ionic/storage */ "./node_modules/@ionic/storage/fesm2015/ionic-storage.js");
-/* harmony import */ var _ionic_native_safari_view_controller_ngx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ionic-native/safari-view-controller/ngx */ "./node_modules/@ionic-native/safari-view-controller/ngx/index.js");
-/* harmony import */ var _auth_config__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./auth.config */ "./src/app/services/auth.config.ts");
-/* harmony import */ var _auth0_cordova__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @auth0/cordova */ "./node_modules/@auth0/cordova/src/index.js");
-/* harmony import */ var _auth0_cordova__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_auth0_cordova__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var auth0_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! auth0-js */ "./node_modules/auth0-js/dist/auth0.min.esm.js");
+/* harmony import */ var _auth0_auth0_spa_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @auth0/auth0-spa-js */ "./node_modules/@auth0/auth0-spa-js/dist/auth0-spa-js.production.js");
+/* harmony import */ var _auth0_auth0_spa_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_auth0_auth0_spa_js__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm2015/index.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm2015/operators/index.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm2015/router.js");
+/* harmony import */ var _ionic_storage__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @ionic/storage */ "./node_modules/@ionic/storage/fesm2015/ionic-storage.js");
+/* harmony import */ var _ionic_native_safari_view_controller_ngx__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @ionic-native/safari-view-controller/ngx */ "./node_modules/@ionic-native/safari-view-controller/ngx/index.js");
+/* harmony import */ var _auth_config__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./auth.config */ "./src/app/services/auth.config.ts");
+/* harmony import */ var _auth0_cordova__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @auth0/cordova */ "./node_modules/@auth0/cordova/src/index.js");
+/* harmony import */ var _auth0_cordova__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(_auth0_cordova__WEBPACK_IMPORTED_MODULE_9__);
+/* harmony import */ var auth0_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! auth0-js */ "./node_modules/auth0-js/dist/auth0.min.esm.js");
+/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @ionic/angular */ "./node_modules/@ionic/angular/dist/fesm5.js");
+
+
+
+// import * as config from '../../../auth_config.json';
+
 
 
 
@@ -921,93 +1134,208 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 let AuthService = class AuthService {
-    constructor(zone, storage, safariViewController) {
+    constructor(router, zone, storage, safariViewController, platform) {
+        this.router = router;
         this.zone = zone;
         this.storage = storage;
         this.safariViewController = safariViewController;
-        this.Auth0 = new auth0_js__WEBPACK_IMPORTED_MODULE_6__["WebAuth"](_auth_config__WEBPACK_IMPORTED_MODULE_4__["AUTH_CONFIG"]);
-        this.Client = new _auth0_cordova__WEBPACK_IMPORTED_MODULE_5___default.a(_auth_config__WEBPACK_IMPORTED_MODULE_4__["AUTH_CONFIG"]);
+        this.platform = platform;
+        // Create an observable of Auth0 instance of client
+        this.auth0Client$ = Object(rxjs__WEBPACK_IMPORTED_MODULE_3__["from"])(_auth0_auth0_spa_js__WEBPACK_IMPORTED_MODULE_2___default()({
+            domain: "dev-0-3qnco2.auth0.com",
+            client_id: "hxWhDv4PpQV6kySkl2yD5iioTM3DZDIT",
+            redirect_uri: `${window.location.origin}`
+        })).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["shareReplay"])(1), // Every subscription receives the same shared value
+        Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["catchError"])(err => Object(rxjs__WEBPACK_IMPORTED_MODULE_3__["throwError"])(err)));
+        // Define observables for SDK methods that return promises by default
+        // For each Auth0 SDK method, first ensure the client instance is ready
+        // concatMap: Using the client instance, call SDK method; SDK returns a promise
+        // from: Convert that resulting promise into an observable
+        this.isAuthenticated$ = this.auth0Client$.pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["concatMap"])((client) => Object(rxjs__WEBPACK_IMPORTED_MODULE_3__["from"])(client.isAuthenticated())), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["tap"])(res => this.loggedIn = res));
+        this.handleRedirectCallback$ = this.auth0Client$.pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["concatMap"])((client) => Object(rxjs__WEBPACK_IMPORTED_MODULE_3__["from"])(client.handleRedirectCallback())));
+        // Create subject and public observable of user profile data
+        this.userProfileSubject$ = new rxjs__WEBPACK_IMPORTED_MODULE_3__["BehaviorSubject"](null);
+        this.userProfile$ = this.userProfileSubject$.asObservable();
+        // Create a local property for login status
+        this.loggedIn = null;
+        this.Auth0 = new auth0_js__WEBPACK_IMPORTED_MODULE_10__["WebAuth"](_auth_config__WEBPACK_IMPORTED_MODULE_8__["AUTH_CONFIG"]);
+        this.Client = new _auth0_cordova__WEBPACK_IMPORTED_MODULE_9___default.a(_auth_config__WEBPACK_IMPORTED_MODULE_8__["AUTH_CONFIG"]);
         this.loading = true;
-        this.storage.get('profile').then(user => this.user = user);
-        this.storage.get('access_token').then(token => this.accessToken = token);
-        this.storage.get('expires_at').then(exp => {
-            this.loggedIn = Date.now() < JSON.parse(exp);
-            this.loading = false;
-        });
+        if (this.platform.is('android')) {
+            console.log('android');
+            this.storage.get('profile').then(user => this.user = user);
+            this.storage.get('access_token').then(token => this.accessToken = token);
+            this.storage.get('expires_at').then(exp => {
+                this.loggedIn = Date.now() < JSON.parse(exp);
+                this.loading = false;
+            });
+        }
+        else {
+            // On initial load, check authentication state with authorization server
+            // Set up local auth streams if user is already authenticated
+            this.localAuthSetup();
+            // Handle redirect from Auth0 login
+            this.handleAuthCallback();
+        }
     }
-    login() {
-        this.loading = true;
-        const options = {
-            scope: 'openid profile offline_access'
-        };
-        // Authorize login request with Auth0: open login page and get auth results
-        this.Client.authorize(options, (err, authResult) => {
-            if (err) {
-                this.zone.run(() => this.loading = false);
-                throw err;
+    // When calling, options can be passed if desired
+    // https://auth0.github.io/auth0-spa-js/classes/auth0client.html#getuser
+    getUser$(options) {
+        return this.auth0Client$.pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["concatMap"])((client) => Object(rxjs__WEBPACK_IMPORTED_MODULE_3__["from"])(client.getUser(options))), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["tap"])(user => this.userProfileSubject$.next(user)));
+    }
+    localAuthSetup() {
+        // This should only be called on app initialization
+        // Set up local authentication streams
+        const checkAuth$ = this.isAuthenticated$.pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["concatMap"])((loggedIn) => {
+            if (loggedIn) {
+                // If authenticated, get user and set in app
+                // NOTE: you could pass options here if needed
+                return this.getUser$();
             }
-            // Set access token
-            this.storage.set('access_token', authResult.accessToken);
-            this.accessToken = authResult.accessToken;
-            // Set access token expiration
-            const expiresAt = JSON.stringify((authResult.expiresIn * 1000) + new Date().getTime());
-            this.storage.set('expires_at', expiresAt);
-            // Set logged in
-            this.loading = false;
-            this.loggedIn = true;
-            // Fetch user's profile info
-            this.Auth0.client.userInfo(this.accessToken, (err, profile) => {
+            // If not authenticated, return stream that emits 'false'
+            return Object(rxjs__WEBPACK_IMPORTED_MODULE_3__["of"])(loggedIn);
+        }));
+        checkAuth$.subscribe();
+    }
+    login(redirectPath = 'profile') {
+        if (this.platform.is('android')) {
+            console.log('android');
+            this.loading = true;
+            const options = {
+                scope: 'openid profile offline_access'
+            };
+            // Authorize login request with Auth0: open login page and get auth results
+            this.Client.authorize(options, (err, authResult) => {
                 if (err) {
+                    this.zone.run(() => this.loading = false);
                     throw err;
                 }
-                this.storage.set('profile', profile).then(val => this.zone.run(() => this.user = profile));
+                // Set access token
+                this.storage.set('access_token', authResult.accessToken);
+                this.accessToken = authResult.accessToken;
+                // Set access token expiration
+                const expiresAt = JSON.stringify((authResult.expiresIn * 1000) + new Date().getTime());
+                this.storage.set('expires_at', expiresAt);
+                // Set logged in
+                this.loading = false;
+                this.loggedIn = true;
+                // Fetch user's profile info
+                this.Auth0.client.userInfo(this.accessToken, (err, profile) => {
+                    if (err) {
+                        throw err;
+                    }
+                    this.storage.set('profile', profile).then(val => this.zone.run(() => this.user = profile));
+                });
             });
-        });
+        }
+        else {
+            // A desired redirect path can be passed to login method
+            // (e.g., from a route guard)
+            // Ensure Auth0 client instance exists
+            this.auth0Client$.subscribe((client) => {
+                // Call method to log in
+                console.log(JSON.stringify(client));
+                console.log('hello');
+                client.loginWithRedirect({
+                    redirect_uri: `${window.location.origin}`,
+                    appState: { target: redirectPath }
+                });
+            });
+        }
+    }
+    handleAuthCallback() {
+        console.log('hello');
+        // Call when app reloads after user logs in with Auth0
+        const params = window.location.search;
+        console.log(params);
+        if (params.includes('code=') && params.includes('state=')) {
+            let targetRoute; // Path to redirect to after login processsed
+            const authComplete$ = this.handleRedirectCallback$.pipe(
+            // Have client, now call method to handle auth callback redirect
+            Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["tap"])(cbRes => {
+                console.log(cbRes);
+                // Get and set target redirect route from callback results
+                targetRoute = cbRes.appState && cbRes.appState.target ? cbRes.appState.target : '/';
+            }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["concatMap"])(() => {
+                // Redirect callback complete; get user and login status
+                return Object(rxjs__WEBPACK_IMPORTED_MODULE_3__["combineLatest"])([
+                    this.getUser$(),
+                    this.isAuthenticated$
+                ]);
+            }));
+            // Subscribe to authentication completion observable
+            // Response will be an array of user and login status
+            authComplete$.subscribe(([user, loggedIn]) => {
+                // Redirect to target route after callback processing
+                this.router.navigate([targetRoute]);
+            });
+        }
+        else {
+            // console.log('da paky dy')
+        }
     }
     logout() {
-        this.storage.remove('profile');
-        this.storage.remove('access_token');
-        this.storage.remove('expires_at');
-        this.accessToken = null;
-        this.user = null;
-        this.loggedIn = false;
-        this.safariViewController.isAvailable()
-            .then((available) => {
-            const auth0Domain = _auth_config__WEBPACK_IMPORTED_MODULE_4__["AUTH_CONFIG"].domain;
-            const clientId = _auth_config__WEBPACK_IMPORTED_MODULE_4__["AUTH_CONFIG"].clientId;
-            const pkgId = _auth_config__WEBPACK_IMPORTED_MODULE_4__["AUTH_CONFIG"].packageIdentifier;
-            let url = `https://${auth0Domain}/v2/logout?client_id=${clientId}&returnTo=${pkgId}://${auth0Domain}/cordova/${pkgId}/callback`;
-            if (available) {
-                this.safariViewController.show({
-                    url: url
-                })
-                    .subscribe((result) => {
-                    if (result.event === 'opened')
-                        console.log('Opened');
-                    else if (result.event === 'loaded')
-                        console.log('Loaded');
-                    else if (result.event === 'closed')
-                        console.log('Closed');
-                }, (error) => console.error(error));
-            }
-            else {
-                // use fallback browser
-                cordova.InAppBrowser.open(url, '_system');
-            }
-        });
+        if (this.platform.is('android')) {
+            console.log('android');
+            this.storage.remove('profile');
+            this.storage.remove('access_token');
+            this.storage.remove('expires_at');
+            this.accessToken = null;
+            this.user = null;
+            this.loggedIn = false;
+            this.safariViewController.isAvailable()
+                .then((available) => {
+                const auth0Domain = _auth_config__WEBPACK_IMPORTED_MODULE_8__["AUTH_CONFIG"].domain;
+                const clientId = _auth_config__WEBPACK_IMPORTED_MODULE_8__["AUTH_CONFIG"].clientId;
+                const pkgId = _auth_config__WEBPACK_IMPORTED_MODULE_8__["AUTH_CONFIG"].packageIdentifier;
+                let url = `https://${auth0Domain}/v2/logout?client_id=${clientId}&returnTo=${pkgId}://${auth0Domain}/cordova/${pkgId}/callback`;
+                if (available) {
+                    this.safariViewController.show({
+                        url: url
+                    })
+                        .subscribe((result) => {
+                        if (result.event === 'opened')
+                            console.log('Opened');
+                        else if (result.event === 'loaded')
+                            console.log('Loaded');
+                        else if (result.event === 'closed')
+                            console.log('Closed');
+                    }, (error) => console.error(error));
+                }
+                else {
+                    // use fallback browser
+                    cordova.InAppBrowser.open(url, '_system');
+                }
+            });
+        }
+        else {
+            // Ensure Auth0 client instance exists
+            this.auth0Client$.subscribe((client) => {
+                // Call method to log out
+                client.logout({
+                    client_id: "hxWhDv4PpQV6kySkl2yD5iioTM3DZDIT",
+                    returnTo: window.location.origin
+                });
+            });
+        }
     }
 };
 AuthService.ctorParameters = () => [
+    { type: _angular_router__WEBPACK_IMPORTED_MODULE_5__["Router"] },
     { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["NgZone"] },
-    { type: _ionic_storage__WEBPACK_IMPORTED_MODULE_2__["Storage"] },
-    { type: _ionic_native_safari_view_controller_ngx__WEBPACK_IMPORTED_MODULE_3__["SafariViewController"] }
+    { type: _ionic_storage__WEBPACK_IMPORTED_MODULE_6__["Storage"] },
+    { type: _ionic_native_safari_view_controller_ngx__WEBPACK_IMPORTED_MODULE_7__["SafariViewController"] },
+    { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_11__["Platform"] }
 ];
 AuthService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
-    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])(),
-    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_core__WEBPACK_IMPORTED_MODULE_1__["NgZone"],
-        _ionic_storage__WEBPACK_IMPORTED_MODULE_2__["Storage"],
-        _ionic_native_safari_view_controller_ngx__WEBPACK_IMPORTED_MODULE_3__["SafariViewController"]])
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
+        providedIn: 'root'
+    }),
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_5__["Router"], _angular_core__WEBPACK_IMPORTED_MODULE_1__["NgZone"],
+        _ionic_storage__WEBPACK_IMPORTED_MODULE_6__["Storage"],
+        _ionic_native_safari_view_controller_ngx__WEBPACK_IMPORTED_MODULE_7__["SafariViewController"], _ionic_angular__WEBPACK_IMPORTED_MODULE_11__["Platform"]])
 ], AuthService);
 
 
@@ -1079,7 +1407,7 @@ Object(_angular_platform_browser_dynamic__WEBPACK_IMPORTED_MODULE_2__["platformB
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Users/rizwanullah/Desktop/ionic apps/01-login/src/main.ts */"./src/main.ts");
+module.exports = __webpack_require__(/*! /Users/rizwanullah/Desktop/ionic apps/auth0/src/main.ts */"./src/main.ts");
 
 
 /***/ }),

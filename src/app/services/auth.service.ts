@@ -1,10 +1,20 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import createAuth0Client from '@auth0/auth0-spa-js';
 import Auth0Client from '@auth0/auth0-spa-js/dist/typings/Auth0Client';
 // import * as config from '../../../auth_config.json';
 import { from, of, Observable, BehaviorSubject, combineLatest, throwError } from 'rxjs';
 import { tap, catchError, concatMap, shareReplay } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { Storage } from '@ionic/storage';
+import { SafariViewController } from '@ionic-native/safari-view-controller/ngx';
+
+// Import AUTH_CONFIG, Auth0Cordova, and auth0.js
+import { AUTH_CONFIG } from './auth.config';
+import Auth0Cordova from '@auth0/cordova';
+import * as auth0 from 'auth0-js';
+import { Platform } from '@ionic/angular';
+
+declare let cordova: any;
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +27,7 @@ export class AuthService {
       client_id: "hxWhDv4PpQV6kySkl2yD5iioTM3DZDIT",
       redirect_uri: `${window.location.origin}`
     })
-    
+
   ) as Observable<Auth0Client>).pipe(
     shareReplay(1), // Every subscription receives the same shared value
     catchError(err => throwError(err))
@@ -39,12 +49,32 @@ export class AuthService {
   // Create a local property for login status
   loggedIn: boolean = null;
 
-  constructor(private router: Router) {
-    // On initial load, check authentication state with authorization server
-    // Set up local auth streams if user is already authenticated
-    // this.localAuthSetup();
-    // Handle redirect from Auth0 login
-    this.handleAuthCallback();
+  Auth0 = new auth0.WebAuth(AUTH_CONFIG);
+  Client = new Auth0Cordova(AUTH_CONFIG);
+  accessToken: string;
+  user: any;
+  loading = true;
+  constructor(private router: Router, public zone: NgZone,
+    private storage: Storage,
+    private safariViewController: SafariViewController, private platform: Platform) {
+    if (this.platform.is('android')) {
+      console.log('android')
+      this.storage.get('profile').then(user => this.user = user);
+      this.storage.get('access_token').then(token => this.accessToken = token);
+      this.storage.get('expires_at').then(exp => {
+        this.loggedIn = Date.now() < JSON.parse(exp);
+        this.loading = false;
+      });
+    }
+    else {
+      this.loading = false;
+      // On initial load, check authentication state with authorization server
+      // Set up local auth streams if user is already authenticated
+      this.localAuthSetup();
+      // Handle redirect from Auth0 login
+      this.handleAuthCallback();
+    }
+
   }
 
   // When calling, options can be passed if desired
@@ -74,20 +104,54 @@ export class AuthService {
   }
 
   login(redirectPath: string = 'profile') {
-    
-    // A desired redirect path can be passed to login method
-    // (e.g., from a route guard)
-    // Ensure Auth0 client instance exists
-    this.auth0Client$.subscribe((client: Auth0Client) => {
-      // Call method to log in
-      console.log(JSON.stringify(client))
-      console.log('hello')
-      client.loginWithRedirect({
-        redirect_uri: `${window.location.origin}`,
-        // appState: { target: redirectPath }
+    if (this.platform.is('android')) {
+      console.log('android')
+      this.loading = true;
+      const options = {
+        scope: 'openid profile offline_access'
+      };
+      // Authorize login request with Auth0: open login page and get auth results
+      this.Client.authorize(options, (err, authResult) => {
+        if (err) {
+          this.zone.run(() =>
+            this.loading = false
+          );
+          throw err;
+        }
+        // Set access token
+        this.storage.set('access_token', authResult.accessToken);
+        this.accessToken = authResult.accessToken;
+        // Set access token expiration
+        const expiresAt = JSON.stringify((authResult.expiresIn * 1000) + new Date().getTime());
+        this.storage.set('expires_at', expiresAt);
+        // Set logged in
+        this.loading = false;
+        this.loggedIn = true;
+        // Fetch user's profile info
+        this.Auth0.client.userInfo(this.accessToken, (err, profile) => {
+          if (err) {
+            throw err;
+          }
+          this.storage.set('profile', profile).then(val =>
+            this.zone.run(() => this.user = profile)
+          );
+        });
       });
-    });
-  
+    }
+    else {
+      // A desired redirect path can be passed to login method
+      // (e.g., from a route guard)
+      // Ensure Auth0 client instance exists
+      this.auth0Client$.subscribe((client: Auth0Client) => {
+        // Call method to log in
+        console.log(JSON.stringify(client))
+        console.log('hello')
+        client.loginWithRedirect({
+          redirect_uri: `${window.location.origin}`,
+          appState: { target: redirectPath }
+        });
+      });
+    }
   }
 
   private handleAuthCallback() {
@@ -119,20 +183,55 @@ export class AuthService {
         this.router.navigate([targetRoute]);
       });
     }
-    else{
-      console.log('da paky dy')
+    else {
+      // console.log('da paky dy')
     }
   }
 
   logout() {
-    // Ensure Auth0 client instance exists
-    this.auth0Client$.subscribe((client: Auth0Client) => {
-      // Call method to log out
-      client.logout({
-        client_id: "hxWhDv4PpQV6kySkl2yD5iioTM3DZDIT",
-        returnTo: window.location.origin
+    if (this.platform.is('android')) {
+      console.log('android')
+      this.storage.remove('profile');
+      this.storage.remove('access_token');
+      this.storage.remove('expires_at');
+      this.accessToken = null;
+      this.user = null;
+      this.loggedIn = false;
+
+      this.safariViewController.isAvailable()
+        .then((available: boolean) => {
+          const auth0Domain = AUTH_CONFIG.domain;
+          const clientId = AUTH_CONFIG.clientId;
+          const pkgId = AUTH_CONFIG.packageIdentifier;
+          let url = `https://${auth0Domain}/v2/logout?client_id=${clientId}&returnTo=${pkgId}://${auth0Domain}/cordova/${pkgId}/callback`;
+          if (available) {
+            this.safariViewController.show({
+              url: url
+            })
+              .subscribe((result: any) => {
+                if (result.event === 'opened') console.log('Opened');
+                else if (result.event === 'loaded') console.log('Loaded');
+                else if (result.event === 'closed') console.log('Closed');
+              },
+                (error: any) => console.error(error)
+              );
+          } else {
+            // use fallback browser
+            cordova.InAppBrowser.open(url, '_system');
+          }
+        }
+        );
+    } else {
+      // Ensure Auth0 client instance exists
+      this.auth0Client$.subscribe((client: Auth0Client) => {
+        // Call method to log out
+        client.logout({
+          client_id: "hxWhDv4PpQV6kySkl2yD5iioTM3DZDIT",
+          returnTo: window.location.origin
+        });
       });
-    });
+    }
+
   }
 
 }

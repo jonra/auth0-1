@@ -189,7 +189,6 @@
       "dom-js": "dom-js",
       "index-69c37885-js": "index-69c37885-js",
       "shadow-css-4889ae62-23996f3f-js": "shadow-css-4889ae62-23996f3f-js",
-      "tabs-tabs-module": "tabs-tabs-module",
       "swiper-bundle-ccdaac54-js": "swiper-bundle-ccdaac54-js",
       "ios-transition-becf5388-js": "ios-transition-becf5388-js",
       "md-transition-f444ed6d-js": "md-transition-f444ed6d-js",
@@ -198,10 +197,7 @@
       "hardware-back-button-5afe3cb0-js": "hardware-back-button-5afe3cb0-js",
       "input-shims-7a8a317c-js": "input-shims-7a8a317c-js",
       "status-tap-7ab22cb8-js": "status-tap-7ab22cb8-js",
-      "tap-click-1f9d539e-js": "tap-click-1f9d539e-js",
-      "home-home-module": "home-home-module",
-      "tab2-tab2-module": "tab2-tab2-module",
-      "tab3-tab3-module": "tab3-tab3-module"
+      "tap-click-1f9d539e-js": "tap-click-1f9d539e-js"
     }[chunkId] || chunkId) +    "-es5.js";
     /******/
   }

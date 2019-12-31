@@ -24,11 +24,16 @@ export class AppComponent {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
-
-      // Redirect back to app after authenticating
-      // (window as any).handleOpenURL = (url: string) => {
-      //   Auth0Cordova.onRedirectUri(url);
-      // }
+      if (this.platform.is('android')) {
+       // Redirect back to app after authenticating
+      (window as any).handleOpenURL = (url: string) => {
+        Auth0Cordova.onRedirectUri(url);
+      }
+      }
+      else {
+        console.log('not platform')
+      }
+      
     });
   }
 }
